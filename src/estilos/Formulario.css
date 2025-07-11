@@ -1,59 +1,83 @@
-<<<<<<< HEAD
-.form-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.container {
+    display: flex;
+    justify-content: center;
 }
 
-.form {
-  background-color: white;
-  padding: 30px 40px;
-  border-radius: 15px;
-  box-shadow: 5px 5px 10px rgba(169, 165, 165, 0.2);
-  text-align: center;
-  width: 300px;
+.form-container{
+    background-color: white;
+
+    width: 400px;
+    height: 400px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    text-align: center;
 }
 
-.form h2 {
-  color: rgb(3, 0, 0);
-  margin-bottom: 20px;
-  font-weight: bold;
-  font-size: 30px;
+.form-container h2 {
+    font-size: 30px;
+    font-family: sans-serif;
+
+    color: #aa0000;
 }
 
-.form input {
-  width: 90%; 
-  padding: 10px;
-  margin: 8px auto; 
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  display: block; 
+.form-container button {
+    width: 50%;
+    height: 40px;
+    border-radius: 30px;
+    border: none;
+    background-color: #134313;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
 }
 
-.form button {
-  background-color: #0d4d00;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 20px;
-  margin-top: 10px;
-  cursor: pointer;
-  
-  width: 50%; 
-  display: block; 
-  margin-left: auto; 
-  margin-right: auto; 
+.form-container button:hover {
+    background-color: #0f3f0f;
 }
 
-.form button:hover {
-  background-color: #0b3f00;
+.form-container p {
+    font-size: 16px;
+    margin-top: 0;
 }
 
-.form p {
-  color: #666;
-  margin-top: 10px;
-  font-size: 12px;
+.form-container p a {
+    color: #134313;
+    text-decoration: none;
 }
-=======
->>>>>>> 99acb93fa2218eed8b62db5b2f43e72e5e938b5b
+
+.form-inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 90%;
+}
+
+.form-inputs input{
+    height: 40px;
+    border-radius: 30px;
+    border: 1px solid black;
+    padding-left: 10px;
+}
+
+.form-inputs input::placeholder{
+    color: gray;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    text-align: left;
+    margin-left: 10px;
+    margin-top: -5px;
+}
+
+.esconder-entrada-padrao {
+    display: none;
+}
