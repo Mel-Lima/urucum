@@ -25,7 +25,7 @@
     border-radius: 50%;
     background-color: grey;
     
-    margin-right: 30px;
+    /* Removed margin-right since .botaoPerfil already has gap */
 
     /* Centraliza o texto */
     display: flex;
@@ -47,4 +47,28 @@ h1 {
     font-family: sans-serif;
 
     color: #134313;
+}
+
+.deslogar {
+    padding: 12px 24px;
+    border-radius: 20px;
+    border: none;
+    background-color: #d32f2f;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: auto;
+    height: auto;
+    margin-right: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+}
+
+.deslogar:hover {
+    background-color: #b71c1c;
 }

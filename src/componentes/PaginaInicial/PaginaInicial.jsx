@@ -2,10 +2,21 @@ import CabecalhoPaginaInicial from "../cabecalhos/CabecalhoPaginaInicial";
 import "./PaginaInicial.css";
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { usuarioEstaLogado } from "../contextos/auth.jsx";
 
 export default function PaginaInicial() {
   const [artistas, setArtistas] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
+  const navegar = useNavigate();
+
+  // Check if user is logged in when component mounts
+  useEffect(() => {
+    if (!usuarioEstaLogado()) {
+      navegar("/login");
+      return;
+    }
+  }, [navegar]);
 
   useEffect(() => {
 

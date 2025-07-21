@@ -6,6 +6,7 @@ import { ref, set, push } from 'firebase/database';
 import { useState } from 'react';
 
 import { useNavigate } from "react-router-dom";
+import { loginUsuario } from './contextos/auth.jsx';
 
 export default function Cadastro() {
   const navegar = useNavigate();
@@ -70,6 +71,9 @@ export default function Cadastro() {
       const novoUsuarioIdRef = push(usuarioRef);
 
       await set(novoUsuarioIdRef, novoUsuario);
+
+      // Automatically log in the user after successful registration
+      loginUsuario(novoUsuario);
 
       navegar("/editar-perfil");
 
