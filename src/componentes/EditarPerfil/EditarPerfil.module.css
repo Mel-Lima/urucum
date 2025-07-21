@@ -26,6 +26,10 @@
     border-radius: 50%;
 }
 
+.imagemUsuario:hover {
+    background-color: #0c2d0c;
+}
+
 .imagemContainer {
     display: flex;
     flex-direction: row;
@@ -125,4 +129,66 @@
 
 #deletarConta:hover {
     background-color: rgb(105, 14, 14);
+}
+
+/* Estilo das tags */
+.tags {
+    color: #134313;
+    background-color: #FFD2B3;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    display: inline-block;
+    font-family: sans-serif;
+}
+
+.tagsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0;
+}
+
+.textoSemTags {
+    color: #666;
+    font-family: sans-serif;
+    margin: 0;
+}
+
+/* Estilo da imagem de perfil */
+
+.imagemPlaceholder {
+  position: relative;
+  display: inline-block;
+}
+
+/*
+    Como aqui é imagem, n tem como deixar mais escuro
+    Aí deixa mais transparente kkk
+*/
+.imagemPlaceholder:hover {
+    opacity: 0.8;
+}
+
+.imagemPreviewContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.imagemPreview {
+    width: 100%;
+    height: 100%;
+
+    /*
+        Esse contain é pra ver a imagem toda no preview
+    */
+    object-fit: contain;
+    object-position: center;
 }

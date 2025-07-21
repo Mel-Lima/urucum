@@ -85,7 +85,7 @@ main {
 }
 
 .botao-editar:hover {
-    background-color: #0f3f0f;
+    background-color: #0b2a0b;
 }
 
 h3 {
@@ -285,4 +285,48 @@ h4 {
 
 .botao-denunciar:hover {
     background-color: #8a0000;
+}
+
+.galeria-header, .colecoes-header {
+    display: flex;
+    align-items: center;
+    margin: 20px 0 10px 0;
+    width: 100%;
+}
+
+.galeria-header h3, .colecoes-header h3 {
+    margin: 0;
+}
+
+.galeria, .colecoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.botao-adicionar {
+    background-color: #134313;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 18px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.botao-adicionar:hover {
+    background-color: #0b2a0b;
+}
+
+.botao-adicionar:active {
+    transform: scale(0.95);
 }

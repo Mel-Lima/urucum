@@ -17,10 +17,10 @@ export default function CabecalhoPaginaInicial() {
       <CabecalhoImagem>
         <h1>Página Inicial</h1>
         <div className="botaoPerfil">
+          <button className="deslogar" onClick={sairConta}> Sair da Conta </button>
           <div className="fotoPerfil">
             <img src="teste.sql" alt="imagem do artista" />
           </div>
-          <button className="deslogar" onClick={sairConta}> Sair da Conta </button>
         </div>
       </CabecalhoImagem>
     </>

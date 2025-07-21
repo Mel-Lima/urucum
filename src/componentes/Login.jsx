@@ -59,19 +59,20 @@ export default function Login() {
       if (snapshot.exists()) {
         const dadosUsuario = snapshot.val();
 
-        let usuarioEncontrado = null;
-
-        Object.values(dadosUsuario).forEach(usuario => {
-          if (usuario.email === email && usuario.senha === senha) {
-            usuarioEncontrado = usuario;
-          }
-        });
-
-        if (usuarioEncontrado) {
+        if (dadosUsuario.senha === senha) {
           /*
-            Ele loga
+            Ele loga - inclui todas as informações do usuário
           */
-          loginUsuario(usuarioEncontrado);
+          loginUsuario({
+            email: dadosUsuario.email,
+            nomeCompleto: dadosUsuario.nomeCompleto,
+            nomeArtistico: dadosUsuario.nomeArtistico,
+            miniBiografia: dadosUsuario.miniBiografia,
+            numeroWhatsApp: dadosUsuario.numeroWhatsApp,
+            usuarioInstagram: dadosUsuario.usuarioInstagram,
+            tags: dadosUsuario.tags,
+            imagemPerfil: dadosUsuario.imagemPerfil
+          });
 
           /*
             E depois vai pra home

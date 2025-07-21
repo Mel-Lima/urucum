@@ -2,10 +2,17 @@ import styles from "./AdicionarObra.module.css";
 import "../../../estilos/PopUps.css";
 
 export default function AdicionarObra(props) {
+  const titulo = props.modoEdicao ? "Editar Obra" : "Adicionar Obra";
+  
   return (props.clicado ? (
     <div className="popup">
       <div className="popup-content">
-        <h2>Adicionar Obra</h2>
+
+        {/*
+          Aqui é aquele "if" que você falou em sala de aula kk
+          Mesma coisa pro de Coleção
+        */}
+        <h2>{titulo}</h2>
         <form className="popup-form">
           <input type="text" placeholder="Título da Obra" maxLength={32} />
           <p className={styles.tamanho}>Tamanho máximo de 32 caracteres</p>

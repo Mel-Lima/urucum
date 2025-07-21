@@ -2,7 +2,7 @@ import CabecalhoPerfilArtista from '../cabecalhos/CabecalhoPerfilArtista';
 import { CiLink } from "react-icons/ci";
 import { FaWhatsapp } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
-import { FaPencilAlt } from "react-icons/fa";
+import { FaPencilAlt, FaPlus } from "react-icons/fa";
 import DenunciarConta from '../pop-ups/DenunciarConta/DenunciarConta';
 import DeletarObra from '../pop-ups/DeletarObra';
 import AdicionarObra from '../pop-ups/AdicionarObra/AdicionarObra';
@@ -23,6 +23,36 @@ export default function PerfilArtista() {
   };
 
   const [popup, setPopup] = useState(null);
+  const [itemSelecionado, setItemSelecionado] = useState(null);
+  const [modoEdicao, setModoEdicao] = useState(false);
+
+  // Função para abrir popup de adicionar obra
+  const adicionarObra = () => {
+    setModoEdicao(false);
+    setItemSelecionado(null);
+    setPopup("adicionar-obra");
+  };
+
+  // Função para abrir popup de editar obra
+  const editarObra = (obra) => {
+    setModoEdicao(true);
+    setItemSelecionado(obra);
+    setPopup("adicionar-obra");
+  };
+
+  // Função para abrir popup de adicionar coleção
+  const adicionarColecao = () => {
+    setModoEdicao(false);
+    setItemSelecionado(null);
+    setPopup("adicionar-colecao");
+  };
+
+  // Função para abrir popup de editar coleção
+  const editarColecao = (colecao) => {
+    setModoEdicao(true);
+    setItemSelecionado(colecao);
+    setPopup("adicionar-colecao");
+  };
 
   const artista = {
     nome: "Nome do Artista",
@@ -91,30 +121,40 @@ export default function PerfilArtista() {
           </div>
         </div>
 
-        <h3>Galeria</h3>
+        <div className='galeria-header'>
+          <h3>Galeria</h3>
+        </div>
         <div className='galeria'>
           {artista.obras.map(obra => (
             <div key={obra.id} className='obra'>
               <img src={obra.imagem} alt={obra.nome} />
               <div className='botoes-editar-deletar'>
                 <button className='deletar' onClick={() => setPopup("deletar-obra")}>X</button>
-                <button className='editar' onClick={() => setPopup("adicionar-obra")}><FaPencilAlt /></button>
+                <button className='editar' onClick={() => editarObra(obra)}><FaPencilAlt /></button>
               </div>
             </div>
           ))}
+          <button className='botao-adicionar' onClick={adicionarObra}>
+            <FaPlus />
+          </button>
         </div>
 
-        <h3>Coleções</h3>
+        <div className='colecoes-header'>
+          <h3>Coleções</h3>
+        </div>
         <div className='colecoes'>
           {artista.colecoes.map(colecao => (
             <div key={colecao.id} className='colecao'>
               <img src={colecao.imagem} alt={colecao.nome} />
               <div className='botoes-editar-deletar'>
                 <button className='deletar' onClick={() => setPopup("deletar-colecao")}>X</button>
-                <button className='editar' onClick={() => setPopup("adicionar-colecao")}><FaPencilAlt /></button>
+                <button className='editar' onClick={() => editarColecao(colecao)}><FaPencilAlt /></button>
               </div>
             </div>
           ))}
+          <button className='botao-adicionar' onClick={adicionarColecao}>
+            <FaPlus />
+          </button>
         </div>
 
         <div className='contato'>
@@ -136,9 +176,19 @@ export default function PerfilArtista() {
 
         {popup === 'denunciar' && <DenunciarConta clicado={true} fechar={() => setPopup(null)} />}
         {popup === 'deletar-obra' && <DeletarObra clicado={true} fechar={() => setPopup(null)} />}
-        {popup === 'adicionar-obra' && <AdicionarObra clicado={true} fechar={() => setPopup(null)} />}
+        {popup === 'adicionar-obra' && <AdicionarObra 
+          clicado={true} 
+          fechar={() => setPopup(null)} 
+          modoEdicao={modoEdicao}
+          itemParaEditar={itemSelecionado}
+        />}
         {popup === 'deletar-colecao' && <DeletarObra clicado={true} fechar={() => setPopup(null)} />}
-        {popup === 'adicionar-colecao' && <AdicionarColecao clicado={true} fechar={() => setPopup(null)} />}
+        {popup === 'adicionar-colecao' && <AdicionarColecao 
+          clicado={true} 
+          fechar={() => setPopup(null)}
+          modoEdicao={modoEdicao}
+          itemParaEditar={itemSelecionado}
+        />}
           
       </main>
     </div>

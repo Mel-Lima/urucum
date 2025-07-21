@@ -2,7 +2,7 @@ import Cabecalho from "./cabecalhos/CabecalhoImagem/CabecalhoImagem";
 import "../estilos/Formulario.css";
 
 import { database } from './Firebase';
-import { ref, set, push } from 'firebase/database';
+import { ref, set, push, get, query, orderByChild, equalTo } from 'firebase/database';
 import { useState } from 'react';
 
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,28 @@ export default function Cadastro() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmacaoSenha, setConfirmacaoSenha] = useState("");
+
+  /*
+    Essa parte aqui também fiz com a ajuda do Copilot
+    Pra checar o email, tenho que importar os métodos do Firebase ali em cima
+    aí uso eles pra pegar a referência com o query, organizo por email e comparo o email digitado pelo usuario
+    se for igual, ele dá erro e não envia
+  */
+  async function verificarEmailExistente(email) {
+    try {
+      /*
+        Aqui, muda-se a referência pro email ao invés do ID aleatório do Firebase quando a gente dá push
+      */
+      const emailKey = email.replace(/[^a-zA-Z0-9]/g, '_');
+      const usuarioRef = ref(database, 'usuarios/' + emailKey);
+      const snapshot = await get(usuarioRef);
+      
+      return snapshot.exists();
+    } catch (error) {
+      console.error("Erro ao verificar email:", error);
+      return false;
+    }
+  }
 
   async function cadastrarUsuario(event) {
     event.preventDefault();
@@ -33,6 +55,13 @@ export default function Cadastro() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       alert("Por favor, insira um email válido!");
+      return;
+    }
+
+    // Check if email already exists
+    const emailJaExiste = await verificarEmailExistente(email);
+    if (emailJaExiste) {
+      alert("Este email já está cadastrado! Por favor, use outro email ou faça login.");
       return;
     }
     
@@ -65,12 +94,15 @@ export default function Cadastro() {
       /*
         Isso aqui foi outra parada também que achei loco
         o replace vai substituir todos os caracteres especiais do email por '_'
+        
+        Mudança: agora vou usar o email como chave única diretamente,
+        sem usar push() para evitar duplicatas
       */
-      const usuarioRef = ref(database, 'usuarios/' + email.replace(/[^a-zA-Z0-9]/g, '_'));
+      const emailKey = email.replace(/[^a-zA-Z0-9]/g, '_');
+      const usuarioRef = ref(database, 'usuarios/' + emailKey);
 
-      const novoUsuarioIdRef = push(usuarioRef);
-
-      await set(novoUsuarioIdRef, novoUsuario);
+      // Use set instead of push to prevent duplicates
+      await set(usuarioRef, novoUsuario);
 
       // Automatically log in the user after successful registration
       loginUsuario(novoUsuario);

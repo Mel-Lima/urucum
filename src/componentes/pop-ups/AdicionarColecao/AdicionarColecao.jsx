@@ -6,13 +6,14 @@ import styles from "./AdicionarColecao.module.css";
 import "../../../estilos/PopUps.css";
 
 export default function AdicionarColecao(props) {
+    const titulo = props.modoEdicao ? "Editar Coleção" : "Adicionar Coleção";
 
     const [popup, setPopup] = useState(null);
 
     return (props.clicado ? (
         <div className="popup">
             <div className="popup-content">
-                <h2>Adicionar Coleção</h2>
+                <h2>{titulo}</h2>
                 <form className="popup-form">
                     <input type="text" placeholder="Título da Coleção" maxLength={32} />
                     <p className={styles.tamanho}>Tamanho máximo de 32 caracteres</p>

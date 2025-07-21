@@ -4,10 +4,15 @@ import "./PaginaInicial.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { usuarioEstaLogado } from "../contextos/auth.jsx";
+import { database } from "../Firebase.jsx";
+import { ref, get } from "firebase/database";
 
 export default function PaginaInicial() {
   const [artistas, setArtistas] = useState([]);
+  const [todosArtistas, setTodosArtistas] = useState([]);
   const [pesquisa, setPesquisa] = useState("");
+  const [pesquisaDebounced, setPesquisaDebounced] = useState("");
+  const [carregando, setCarregando] = useState(true);
   const navegar = useNavigate();
 
   // Check if user is logged in when component mounts
@@ -18,33 +23,86 @@ export default function PaginaInicial() {
     }
   }, [navegar]);
 
+  // Debounce search input
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setPesquisaDebounced(pesquisa);
+    }, 300);
 
-    const procurarArtistas = async () => {
+    return () => clearTimeout(timer);
+  }, [pesquisa]);
 
-      const apiURL = `https://rickandmortyapi.com/api/character/?name=${pesquisa}`
-
+  // Load all artists once when component mounts
+  useEffect(() => {
+    const carregarTodosArtistas = async () => {
       try {
-        const resposta = await fetch(apiURL);
+        setCarregando(true);
+        const usuariosRef = ref(database, 'usuarios');
+        const snapshot = await get(usuariosRef);
 
-        if (!resposta.ok) {
-          if (resposta.status === 404) {
-            setArtistas([]);
-          } else {
-            console.error("Erro ao buscar artista:", resposta.status);
-          }
+        if (snapshot.exists()) {
+          const usuariosData = snapshot.val();
+          let artistasEncontrados = [];
+
+          Object.keys(usuariosData).forEach(emailKey => {
+            const usuario = usuariosData[emailKey];
+            
+            if (usuario.nomeArtistico) {
+              artistasEncontrados.push({
+                id: emailKey,
+                name: usuario.nomeArtistico,
+                nomeCompleto: usuario.nomeCompleto,
+                image: usuario.imagemPerfil || "https://placehold.co/150",
+                bio: usuario.miniBiografia || "",
+                tags: usuario.tags || [],
+                email: usuario.email
+              });
+            }
+          });
+
+          setTodosArtistas(artistasEncontrados);
+          setArtistas(artistasEncontrados);
         } else {
-          const dados = await resposta.json();
-          setArtistas(dados.results);
+          setTodosArtistas([]);
+          setArtistas([]);
         }
-      }
-      catch (erro) {
-        console.error("Erro ao buscar artistas:", erro);
+      } catch (error) {
+        console.error("Erro ao buscar artistas:", error);
+        setTodosArtistas([]);
+        setArtistas([]);
+      } finally {
+        setCarregando(false);
       }
     };
 
-    procurarArtistas();
-  }, [pesquisa]);
+    carregarTodosArtistas();
+  }, []);
+
+  // Filter artists based on search input
+  useEffect(() => {
+    if (pesquisaDebounced.trim() === "") {
+      setArtistas(todosArtistas);
+    } else {
+      const artistasFiltrados = todosArtistas.filter(artista => {
+        const pesquisaLower = pesquisaDebounced.toLowerCase();
+        
+        // Busca por nome artístico
+        const nomeMatch = artista.name.toLowerCase().includes(pesquisaLower);
+        
+        // Busca por nome completo
+        const nomeCompletoMatch = artista.nomeCompleto?.toLowerCase().includes(pesquisaLower);
+        
+        // Busca por tags
+        const tagMatch = artista.tags.some(tag => 
+          tag.toLowerCase().includes(pesquisaLower)
+        );
+
+        return nomeMatch || nomeCompletoMatch || tagMatch;
+      });
+      
+      setArtistas(artistasFiltrados);
+    }
+  }, [pesquisaDebounced, todosArtistas]);
   
   return (
     <>
@@ -64,8 +122,12 @@ export default function PaginaInicial() {
           </div>
 
           <div className="galeria-artistas">
-            {artistas.length === 0 ? (
-              <p className="nao-existe">Nenhum artista encontrado.</p>
+            {carregando ? (
+              <p className="carregando">Carregando artistas...</p>
+            ) : artistas.length === 0 ? (
+              <p className="nao-existe">
+                {pesquisaDebounced.trim() !== "" ? `Nenhum artista encontrado para "${pesquisaDebounced}".` : "Nenhum artista encontrado."}
+              </p>
             ) : (
               artistas.map((artista, index) => (
                 <div key={index} className="cartinha-artista" onClick={() => {

@@ -8,6 +8,13 @@ export default function AdicionarTag(props) {
   const [pesquisarTag, setPesquisarTag] = useState("");
   const [tagsAdicionadas, setTagsAdicionadas] = useState([]);
 
+  // Initialize with existing tags when component opens
+  useEffect(() => {
+    if (props.tagsExistentes) {
+      setTagsAdicionadas(props.tagsExistentes);
+    }
+  }, [props.tagsExistentes]);
+
     const tags = [
       "Música",
       "Arte",
@@ -28,6 +35,12 @@ export default function AdicionarTag(props) {
         alert("Tag já adicionada!");
       }
     }
+
+    useEffect(() => {
+      if (props.mudancaTags) {
+        props.mudancaTags(tagsAdicionadas);
+      }
+    }, [tagsAdicionadas, props]);
 
     function RemoverTag(tag) {
       setTagsAdicionadas(tagsAntigas => {
@@ -100,8 +113,8 @@ export default function AdicionarTag(props) {
             </table>
 
             <div className="botoes-popup">
-              <button type="submit">SALVAR</button>
               <button className="botao-cancelar" type="button" onClick={props.fechar}>CANCELAR</button>
+              <button type="button" onClick={() => [props.salvar(tagsAdicionadas), props.fechar()]}>SALVAR</button>
             </div>
           </form>
         </div>

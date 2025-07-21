@@ -51,6 +51,11 @@ export function loginUsuario(dadosUsuario) {
     email: dadosUsuario.email,
     nomeCompleto: dadosUsuario.nomeCompleto,
     nomeArtistico: dadosUsuario.nomeArtistico,
+    miniBiografia: dadosUsuario.miniBiografia,
+    numeroWhatsApp: dadosUsuario.numeroWhatsApp,
+    usuarioInstagram: dadosUsuario.usuarioInstagram,
+    tags: dadosUsuario.tags,
+    imagemPerfil: dadosUsuario.imagemPerfil,
     logado: true
   }));
 }
